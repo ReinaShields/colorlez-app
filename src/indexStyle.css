@@ -1,0 +1,92 @@
+@font-face {
+  font-family: 'myFont';
+  src: url('/Fredoka/Fredoka-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: myFont;
+  color: rgb(211, 211, 211);
+}
+
+h1 {
+  font-size: 2.35rem;
+  font-weight: normal;
+}
+
+p {
+  font-size: 1.15rem;
+}
+
+body, html {
+  background-color: rgb(34, 36, 37);
+  height: 100%;
+}
+
+.headerDiv {
+  padding: 20px;
+  text-align: center;
+  line-height: 1.15;
+  border-bottom: 1px solid rgb(140, 140, 140);
+}
+
+.mainDiv {
+  margin: auto;
+  display: flex;
+  width: 50%;
+  padding-top: 40px;
+}
+
+.sectorDiv {
+  display: flex;
+  height: 250px;
+  margin: auto;
+}
+
+/*REFRESH BUTTON*/
+.button {
+  margin: auto;
+  display: flex;
+  background-color: transparent;
+  border: 3px solid rgb(140, 140, 140);
+  border-radius: 3px;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s
+}
+.button:hover {
+  background-color: rgba(140, 140, 140, 0.5);
+  color: white;
+}
+
+
+/*PALETTE*/
+.paletteDiv {
+  margin: auto;
+  float: center;
+  /*border: 3px solid red;*/
+  width: 50%;
+  height: 30%;
+  margin-top: 40px;
+}
+.board-row {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  /*border: 3px solid blue;*/
+}
+.colorButtonDiv {
+  border: 2px solid rgb(17, 17, 17);
+  border-radius: 5px;
+  float: center;
+  height: 40px;
+  width: 40px;
+  margin: 1px;
+  padding: 0;
+  cursor: pointer;
+}
