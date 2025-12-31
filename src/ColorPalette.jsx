@@ -3,15 +3,48 @@ import { PALATTE_BLANK_COLOR, COLOR_PALETTE } from './Constants.jsx';
 import './indexStyle.css';
 
 // ============================================================================
+// Setup
+// ============================================================================
+const toRgbString = (rgbArray) => {
+  return `rgb(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]})`;
+};
+
+// ============================================================================
 // Buttons
 // ============================================================================
-function DisplaySquare({ color }){
+//TODO does this need to be a button? Can it be a div?
+function DisplaySquare({ selectedColors }){
+/*
+  const colorX = toRgbString(selectedColors[0]) //turns it into "rgb(r, g, b)"
+
+  if(colorX){
+    const firstColor = colorX);
+  }else{
+    const firstColor = PALATTE_BLANK_COLOR;
+  }
+*/
+  const firstColor = selectedColors[0] ? toRgbString(selectedColors[0]) : PALATTE_BLANK_COLOR;
+  const secondColor = selectedColors[1] ? toRgbString(selectedColors[1]) : PALATTE_BLANK_COLOR;
+  const thridColor = selectedColors[2] ? toRgbString(selectedColors[2]) : PALATTE_BLANK_COLOR;
+
   return (
+    <div className="board-row">
     <button 
       className="displaySqaureDiv"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: firstColor }}
     >
     </button>
+    <button 
+      className="displaySqaureDiv"
+      style={{ backgroundColor: secondColor }}
+    >
+    </button>
+    <button 
+      className="displaySqaureDiv"
+      style={{ backgroundColor: thridColor }}
+    >
+    </button>
+    </div>
   );
 }
 
@@ -37,6 +70,7 @@ function Backspace({ onClick }){
   );
 }
 
+//TODO make onClick add to set array
 function EnterButton({ onClick }){
   return (
     <button 
@@ -51,19 +85,14 @@ function EnterButton({ onClick }){
 
 
 
-export default function ColorPalette({ onChange }) {
+export default function ColorPalette({ onChange, onSubmit }) {
   // ============================================================================
   // Setup
   // ============================================================================
   const [selectedColors, setSelectedColors] = useState([null, null, null]);
-  const toRgbString = (rgbArray) => {
-    return `rgb(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]})`;
-  };
-
-
 
   // ============================================================================
-  // Button Logic
+  // Button Logic, if haswon!=null dont allow these to work
   // ============================================================================
   //===Update array if color is selected
   function handleColorClick(colorIndex) {
@@ -114,12 +143,16 @@ export default function ColorPalette({ onChange }) {
   }
 
   //===Enter Clicker
+  //WIP
   function handleEnterButtonClick(){
     //Dont update if array is NOT full
     if(selectedColors[2] == null){
       return;
     }
     
+    onSubmit(selectedColors);
+    setSelectedColors([null, null, null]); //Clear active color set in ColorPalette.jsx
+    onChange([null, null, null]); //Update App.jsx
   }
 
 
@@ -130,17 +163,9 @@ export default function ColorPalette({ onChange }) {
     <>
       {/* User Selected Colors Display */}
       <div className="displayDiv">
-      <div className="board-row">
-        <DisplaySquare 
-          color={selectedColors[0] ? toRgbString(selectedColors[0]) : PALATTE_BLANK_COLOR} 
+      <DisplaySquare 
+          selectedColors={selectedColors} 
         />
-        <DisplaySquare 
-          color={selectedColors[1] ? toRgbString(selectedColors[1]) : PALATTE_BLANK_COLOR} 
-        />
-        <DisplaySquare 
-          color={selectedColors[2] ? toRgbString(selectedColors[2]) : PALATTE_BLANK_COLOR} 
-        />
-      </div>
       </div>
 
       {/* Color Palette */}

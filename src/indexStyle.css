@@ -82,6 +82,22 @@ body, html {
   padding: 0;
 }
 
+/*SET HISTORY*/
+.historyDiv {
+  margin: auto;
+  float: center;
+  border: 1px solid red;
+  width: 50%;
+  height: 30%;
+  margin-top: 40px;
+}
+.historyDisplayDiv {
+  margin: auto;
+  float: center;
+  width: 50%;
+  height: 30%;
+}
+
 /*PALETTE BUTTONS*/
 .paletteDiv {
   margin: auto;

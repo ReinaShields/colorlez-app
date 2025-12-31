@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { PALATTE_BLANK_COLOR, BACKGROUND_COLOR, CIRCLE_BLANK_COLOR, COLOR_PALETTE } from './Constants.jsx';
 import ColorPalette from './ColorPalette.jsx';
+import ColorSetHistory from './ColorSetHistory.jsx';
 import './indexStyle.css';
 
-//COLOR WHEEL COMPONET AND FUNCTIONALITY
+//COLOR WHEEL COMPONET AND FUNCTIONALITY 
 export default function App() {
   // ==========================================================================
   // GAME STATE (Memory)
@@ -11,7 +12,11 @@ export default function App() {
   const [goalColor, setGoalColor] = useState(null);
   const [userColors, setUserColors] = useState([null, null, null]);
   const [guessHistory, setGuessHistory] = useState([]);
-  const [hasWon, setHasWon] = useState(false);
+  const [hasWon, setHasWon] = useState(null);
+  //WORKING HERE
+  //haswon = null continue game (user can input and guessHistory<6)
+  //haswon = true user wins, no more input
+  //haswon = false user loser, no more input
 
   const canvasRef = useRef(null);
   
@@ -166,12 +171,15 @@ export default function App() {
     const randomColors = selectRandomColors();
     const fourColors = blendColors(randomColors);
     const goalColor = fourColors[3];
+
+    console.log("🎯 ANSWER:", randomColors.map(c => c[3])); //Show color names
+    console.log("🎨 Goal RGB:", goalColor);
     
     //Reset existing values
     setGoalColor(goalColor);
     setUserColors([null, null, null]);
     setGuessHistory([]);
-    setHasWon(false);
+    setHasWon(null);
 
     //Save color set as JSON
     const puzzleData = {
@@ -187,8 +195,29 @@ export default function App() {
     setUserColors(newColors);
   }
 
-  function handleColorSetSubmission() {
+  //Update set history to include new set
+  //WORKING HERE
+  function handleColorSetSubmission(newColors) {
+    const newColorMixed = blendColors(newColors);
+    setGuessHistory(prev => [...prev, newColorMixed]); //setGuessHistory([...guessHistory, fourColorArray])
+    //WIN CONDITION (hasWon)
+    //if guessHistory.length() >= 6 and newColorMixed[3] != goal color, then user loses
+    if((guessHistory.length>=6) && (toRgbString(newColorMixed[3]) != toRgbString(goalColor))){
+      setHasWon(false);
+    }
+    //else, user wins
+    else if(toRgbString(newColorMixed[3]) == toRgbString(goalColor)){
+      setHasWon(true);
+    }
+    /*
+    if(hasWon!=null){
+      displayWinCondition(hasWon);
+    }
+    */
+  }
 
+  function displayWinCondition(hasWon) {
+    //need pop up for both with a restart button
   }
   
   // ============================================================================
@@ -294,9 +323,15 @@ export default function App() {
       <button className="button" onClick={startNewPuzzle}>
           New Puzzle
       </button>
+      <div className="historyDiv">
+        <ColorSetHistory 
+          history={guessHistory}
+        />
+      </div>
       <div className="paletteDiv">
         <ColorPalette 
           onChange={handleColorsChange}
+          onSubmit={handleColorSetSubmission}
         />
       </div>
     </>

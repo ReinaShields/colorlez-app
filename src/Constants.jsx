@@ -1,7 +1,9 @@
 //Colors
 export const PALATTE_BLANK_COLOR = "rgb(135, 138, 140)";
+export const PALATTE_BLANK_SET = ([PALATTE_BLANK_COLOR, PALATTE_BLANK_COLOR, PALATTE_BLANK_COLOR]);
 export const BACKGROUND_COLOR = "rgb(34, 36, 37)";
 export const CIRCLE_BLANK_COLOR = "rgb(211, 211, 211)";
+
 export const COLOR_PALETTE = [
     [255, 255, 255, 'white'], 
     [255, 250, 200, 'cream'], 
