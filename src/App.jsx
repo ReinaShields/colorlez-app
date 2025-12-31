@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import './indexStyle.css';
+import { PALATTE_BLANK_COLOR, BACKGROUND_COLOR, CIRCLE_BLANK_COLOR, COLOR_PALETTE } from './Constants.jsx';
 import ColorPalette from './ColorPalette.jsx';
+import './indexStyle.css';
 
 //COLOR WHEEL COMPONET AND FUNCTIONALITY
 export default function App() {
@@ -22,33 +23,7 @@ export default function App() {
   const CANVAS_CENTER_X = 125;
   const CANVAS_CENTER_Y = 125;
   const CIRCLE_RADIUS = 110;
-  const BACKGROUND_COLOR = "rgb(34, 36, 37)";
-  const BLANK_COLOR = "rgb(211, 211, 211)";
   const BORDER_WIDTH = 5;
-  
-  // Color palette for random selection
-  const COLOR_PALETTE = [
-    [255, 255, 255, 'white'], 
-    [255, 250, 200, 'cream'], 
-    [255, 225, 25, 'yellow'], 
-    [245, 130, 49, 'orange'], 
-    [154, 99, 36, 'brown'], 
-    [230, 25, 75, 'fuchsia'],
-    [128, 0, 0, 'red'],  
-    [70, 240, 240, 'cyan'], 
-    [170, 255, 195, 'mint'], 
-    [188, 246, 12, 'lime'], 
-    [60, 180, 75, 'green'], 
-    [128, 128, 0, 'olive'], 
-    [0, 128, 128, 'teal'], 
-    [250, 190, 190, 'pink'], 
-    [230, 190, 255, 'lavender'], 
-    [240, 50, 230, 'magenta'], 
-    [145, 30, 180, 'purple'], 
-    [67, 99, 216, 'blue'], 
-    [0, 0, 117, 'navy'], 
-    [0, 0, 0, 'black']
-  ];
   
   // Mixing weights
   const COLOR_MIX_WEIGHTS = {
@@ -207,12 +182,20 @@ export default function App() {
     };
     localStorage.setItem('currentPuzzle', JSON.stringify(puzzleData));
   };
+
+  function handleColorsChange(newColors) {
+    setUserColors(newColors);
+  }
+
+  function handleColorSetSubmission() {
+
+  }
   
   // ============================================================================
   // Component Lifecycle
   // ============================================================================
   
-  //FIRST GEN
+  //===FIRST GEN
   useEffect(() => {
     const savedPuzzle = localStorage.getItem('currentPuzzle');
 
@@ -220,7 +203,7 @@ export default function App() {
     if(savedPuzzle) {
       const puzzleData = JSON.parse(savedPuzzle);
       setGoalColor(puzzleData.goalColor);
-      setUserColors(puzzleData.userColors);
+      //setUserColors(puzzleData.userColors);
       setGuessHistory(puzzleData.guessHistory);
     setHasWon(puzzleData.hasWon);
     } else {
@@ -228,7 +211,7 @@ export default function App() {
     }
   }, []); //Runs when page first loads
 
-  //Redraw if goalColor or userColors changes (full reset or user input)
+  //===Redraw if goalColor or userColors changes (full reset or user input)
   useEffect(() => {
     //Only run if canvas and goal were set up
     if (!canvasRef.current) {
@@ -245,21 +228,21 @@ export default function App() {
     if (userColors[0]) {
       color1 = toRgbString(userColors[0]);
     } else {
-      color1 = BLANK_COLOR;
+      color1 = CIRCLE_BLANK_COLOR;
     }
     
     let color2;
     if (userColors[1]) {
       color2 = toRgbString(userColors[1]);
     } else {
-      color2 = BLANK_COLOR;
+      color2 = CIRCLE_BLANK_COLOR;
     }
     
     let color3;
     if (userColors[2]) {
       color3 = toRgbString(userColors[2]);
     } else {
-      color3 = BLANK_COLOR;
+      color3 = CIRCLE_BLANK_COLOR;
     }
     const goal = toRgbString(goalColor);
 
@@ -267,7 +250,7 @@ export default function App() {
     renderColorWheel(ctx, [color1, color2, color3, goal]);
   }, [goalColor, userColors]);
 
-  //Save progress whenever game state changes
+  //===Save progress whenever game state changes
   useEffect(() => {
     //Only run if canvas and goal were set up
     if (!canvasRef.current) {
@@ -312,7 +295,9 @@ export default function App() {
           New Puzzle
       </button>
       <div className="paletteDiv">
-        <ColorPalette />
+        <ColorPalette 
+          onChange={handleColorsChange}
+        />
       </div>
     </>
   );
